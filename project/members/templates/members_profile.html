@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block title %} contant ! {% endblock %}
+
+{% block content %}
+<div class="container py-5 my-5">
+
+ {{page_user}} 
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-10">
+    {% if page_user.profile.profile_picture.url %}
+        <img src="{{page_user.profile.profile_picture.url }}" style="width:100px; height: 100px;" class="img-fluid rounded-start" alt="...">
+    {% else %}
+        <img style="width: 100px ;height: 100px;" src="{% static 'myblog/images/default_profile.png' %}"/> 
+
+    {% endif %}
+
+      </div>
+      <div class="col-md-10">
+        <div class="card-body">
+        <p> <small class="text-muted"> 
+            <!-- twitter -->
+             {% if page_user.profile.twitter_url %}
+             <a href="{{page_user.profile.twitter_url}}"> 
+             Twitter| </a> 
+             {% endif %} 
+             <!-- website-->
+             {% if page_user.profile.website_url %}
+             <a href="{{page_user.profile.website_url }}"> 
+             Website| </a> 
+             {% endif %} 
+              <!-- facebook-->
+              {% if page_user.profile.facebook_url %}
+              <a href="{{page_user.profile.facebook_url}}"> 
+              Facebook| </a> 
+              {% endif %} 
+
+             <!-- githube -->
+             {% if page_user.profile.githube_url %}
+             <a href="{{page_user.profile.githube_url}}"> 
+            Gethube | </a> 
+             {% endif %} 
+
+
+             </small> </p>
+          <h5 class="card-title">{{page_user.user.first_name}}</h5>
+          <p class="card-text">{{page_user.bio}}</p>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+

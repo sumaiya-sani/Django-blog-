@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container py-5 my-5 fluid">
+<h1> {{post.title}}</h1>
+<small> By: {{post.author.first_name}} {{post.author.last_name}}-<small><small> <a href="{% url 'myblog:delete_post' post.pk %}"> DELETE  </a></small> || {{post.date_of_post}}</small> </small>
+<hr>
+<br/>
+{% if post.header_photo %}
+<img src="{{ post.header_photo.url }}" class="img-fluid" alt="...">
+{% endif %}
+{{post.body|slice:":200"|safe}}
+
+<br/>
+<br/>
+<a href="{% url 'members:members_profile' post.author.profile.id  %}"> profile </a>|
+
+<a href="{% url 'myblog:home' %}"> back </a>
+<br> 
+<a href="{% url 'myblog:add_comment' post.pk %}"> add comment ! </a>
+ 
+
+<br>
+
+<hr>
+<!-- comment section start -->
+<h3> Comments ... </h3>
+{% if not post.comments.all %}
+<h4> No comments yet!
+  <a href="{% url 'myblog:add_comment' post.pk %}"> add comment ! </a>
+</h4>
+{% else %}
+{% for comment in post.comments.all %}
+<strong> {{comment.name}}</strong>
+<small> {{comment.date_added}}</small>
+<br>
+<p class="lead">{{comment.body}}</p>
+<a href="{% url 'myblog:add_comment' post.pk %}"> add comment ! </a>
+{% endfor %}
+{% endif %}
+<br>
+<form action="{% url 'myblog:like_post' post.pk %}" method="POST">
+    {% csrf_token %}
+    {% if request.user in post.likes.all %}
+    <button type="submit",name="post_id " ,value="{{post.id}}" class="btn btn-danger"> unlike  </button>
+ 
+    {% else %}
+   
+    <button type="submit",name="post_id " ,value="{{post.id}}" class="btn btn-primary">Like  </button>
+    
+    {% endif %}
+
+</form>
+<br>
+<hr>
+<h6>like by:{{object.total_likes}} </h6> 
+
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-10">
+    {% if post.author.profile.profile_picture.url %}
+        <img src="{{ post.author.profile.profile_picture.url }}" style="width:100px; height: 100px;" class="img-fluid rounded-start" alt="...">
+    {% else %}
+        <img style="width: 100px ;height: 100px;" src="{% static 'myblog/images/default_profile.png' %}"/> 
+
+    {% endif %}
+
+      </div>
+      <div class="col-md-10">
+        <div class="card-body">
+        <p> <small class="text-muted"> 
+            <!-- twitter -->
+             {% if post.author.profile.twitter_url %}
+             <a href="{{post.author.profile.twitter_url}}"> 
+             Twitter| </a> 
+             {% endif %} 
+             <!-- website-->
+             {% if post.author.profile.website_url %}
+             <a href="{{ post.author.profile.website_url }}"> 
+             Website| </a> 
+             {% endif %} 
+              <!-- facebook-->
+              {% if post.author.profile.facebook_url %}
+              <a href="{{post.author.profile.facebook_url}}"> 
+              Facebook| </a> 
+              {% endif %} 
+
+             <!-- githube -->
+             {% if post.author.profile.githube_url %}
+             <a href="{{post.author.profile.githube_url}}"> 
+            Gethube | </a> 
+             {% endif %} 
+
+
+             </small> </p>
+          <h5 class="card-title">{{post.author.first_name}}</h5>
+          <p class="card-text">{{post.author.profile.bio}}</p>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+</div>

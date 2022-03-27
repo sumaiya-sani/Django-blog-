@@ -1,0 +1,39 @@
+
+{% extends 'base.html' %}
+
+{% block title %} Welcome to my blog ! {% endblock %}
+{% block content %}
+
+
+<div class="container py-5 my-5 lead bg-light text-dark ">
+     <h1> home !</h1>
+     <div class="row">
+          <div class="col-12">
+
+{% for post in object_list %}
+<h3>{{post.author.id}}</h3>
+
+<ul  >
+<li><a href="{% url 'myblog:article_detail' post.pk %}"> {{ post.title}} </a>
+     ({{post.category}}) 
+      -{{post.author.first_name}} -
+       <small>{{post.date_of_post}}</small>
+{% if user.is_authenticated %}
+     {% if user.id == post.author.id %}
+     <small> <a href="{% url 'myblog:update_post' post.pk %}"> EDIT </a></small> || 
+     <small> <a href="{% url 'myblog:delete_post' post.pk %}"> DELETE </a></small><br>
+     {% endif %} 
+{% else %}
+     <h3> your are not able to come here ! </h3>
+
+{% endif %}
+{{post.body|safe}} | {{post.snippets}}</li>
+
+</ul>
+
+{% endfor %}
+</div>
+</div>
+</div>
+
+{% endblock %}

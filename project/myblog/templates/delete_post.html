@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load bootstrap5 %}
+{% block title %} delete ! {% endblock %}
+
+{% block content %}
+
+
+<div class="container py-5 my-5">
+    <h3> Delete {{post.title}}</h3>
+    <form method="POST" >
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+
+     <strong> Are you sure you want delete it ?</strong>
+        <button type="submit" class="btn btn-primary" > Delet Post </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
